@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'login')}">
+<head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
+    <title>登陆 - PaoPao</title>
+    <script th:inline="javascript">
+        function queryLogin() {
+            $.getJSON([[@{/user/queryLogin}]], function (data) {
+                if (data.code === 0) {
+                    var date = new Date();
+                    date.setTime(date.getTime()+7*24*3600*1000)
+                    document.cookie = 'token=' + escape(data.data) +';path=/;expires='+date.toUTCString();
+                    clearInterval(time);
+                    window.location.href = [[@{/user/console}]]
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        var time;
+        $(function () {
+            $('#qrCodeDiv').qrcode([[${qrCode}]]);
+            queryLogin();
+            time = setInterval(function () {
+                queryLogin();
+            }, 20100);
+        })
+    </script>
+</head>
+<body>
+    <div class="text-center">
+        <div id="qrCodeDiv"></div>
+        <div class="row mt-3">
+            <div class="col-lg-5 col-2">
+            </div>
+            <div class="col-lg-2 col-8">
+                <div class="bg-info text-light">
+                    微信扫码登陆
+                </div>
+            </div>
+            <div class="col-lg-5 col-2">
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

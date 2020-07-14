@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'console')}">
+    <head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
+    <title>控制台 - PaoPao</title>
+    <script th:inline="javascript">
+        function logout() {
+            document.cookie = "token=0;path=/;expires="+(new Date(0)).toUTCString();
+            window.location.href = [[@{/user/login}]]
+        }
+
+        function createGroup() {
+            const groupName = $('#groupName').val();
+            const groupEmail = $('#groupEmail').val();
+            $.post([[@{/user/create}]], {name: groupName, email: groupEmail}, function (data) {
+                if (data.code === 0) {
+                    window.location.href = [[@{/user/console}]]
+                } else {
+                    alert('创建失败');
+                }
+            }, 'json');
+        }
+
+        function groupNumberDelete(id) {
+            $.post([[@{/user/groupNumberDelete/}]] + id, {}, function (data) {
+                if (data.code === 0) {
+                    window.location.href = [[@{/user/console}]]
+                } else {
+                    alert('删除失败');
+                }
+            }, 'json');
+        }
+        function getGroupQrCode(groupUid) {
+            $('#groupQrCodeDiv').html('获取二维码中，请稍后...');
+            $.getJSON([[@{/user/groupQrCode/}]]+groupUid, function (data) {
+                if (data.code === 0) {
+                    $('#groupQrCodeDiv').html('');
+                    $('#groupQrCodeDiv').qrcode(data.data)
+                } else {
+                    alert(data.msg)
+                }
+            });
+        }
+        
+        function refreshGroup() {
+            window.location.href = [[@{/user/console}]]
+        }
+        function deleteGroup(groupUid) {
+            $.post([[@{/user/deleteGroup/}]]+groupUid, {}, function (data) {
+                if (data.code === 0) {
+                    window.location.href = [[@{/user/console}]]
+                } else {
+                    alert(data.msg)
+                }
+            }, 'json');
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div class="row mb-3">
+            <div class="col-lg-2 col">
+                用户：<span th:if="${info != null}" th:text="${info.nikeName}"></span>
+            </div>
+            <div class="col-lg-4 col">
+                Token: <span th:if="${info != null}" th:text="${info.token}"></span>
+            </div>
+            <div class="col-lg-4 col">
+                Alias: <span th:if="${info != null}" th:text="${info.alias}"></span>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary float-right" onclick="logout()">退出登陆</button>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#createGroupModalCenter">
+                添加组
+            </button>
+            <h3>我的组</h3>
+        </div>
+        <hr>
+        <div th:if="${info!=null && !#maps.isEmpty(info.myGroups)}" th:each="myGroup:${info.myGroups}">
+            <div class="row">
+                <div class="col-lg-4 col text-info bg-light">
+                    组名:[[${myGroup.value.get(0).name}]]
+                </div>
+                <div class="col-lg-5 col text-info bg-light">
+                    组id:[[${myGroup.value.get(0).groupUid}]]
+                </div>
+                <div class="col mb-1 text-right">
+                    <button th:onclick="getGroupQrCode([[${myGroup.value.get(0).groupUid}]])" data-toggle="modal" data-target="#groupQrCodeModal" class="btn btn-outline-success mr-2">二维码</button>
+                    <button data-toggle="modal" data-target="#deleteGroupModal" class="btn btn-outline-danger">删除组</button>
+                    <!-- delete group confirm Modal -->
+                    <div class="modal fade" id="deleteGroupModal" tabindex="-1" role="dialog" aria-labelledby="deleteGroupModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">删除</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    确定删除组【[[${myGroup.value.get(0).name}]]】吗？
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" th:onclick="deleteGroup([[${myGroup.value.get(0).groupUid}]])" >删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover" >
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">昵称</th>
+                    <th scope="col">类型</th>
+                    <th scope="col">加入时间</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${myGroup.value}">
+                    <td th:text="${item.nikeName}"></td>
+                    <td th:text="${item.type}==1? '组长' : '组员'">Otto</td>
+                    <td th:text="${#temporals.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td>
+                        <button class="btn btn-danger" th:if="${item.type!=1}" th:onclick="groupNumberDelete([[${item.id}]])">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <h3>加入的组</h3>
+        <hr>
+        <div th:if="${info!=null && !#maps.isEmpty(info.joinedGroups)}" th:each="joinedGroup:${info.joinedGroups}">
+            <div class="row">
+                <div class="col-lg-4 col text-info bg-light">
+                    组名：[[${joinedGroup.value.get(0).name}]]
+                </div>
+                <div class="col-lg-5 col text-info bg-light">
+                    组id：[[${joinedGroup.value.get(0).groupUid}]]
+                </div>
+                <div class="col mb-1 text-right">
+                    <button data-toggle="modal" data-target="#leaveGroupModal" class="btn btn-outline-danger">离开组</button>
+                    <!-- leave group confirm Modal -->
+                    <div class="modal fade" id="leaveGroupModal" tabindex="-1" role="dialog" aria-labelledby="leaveGroupModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="leaveGroupModalLabel">离开</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    确定离开组【[[${joinedGroup.value.get(0).name}]]】吗？
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" th:onclick="leaveGroup([[${joinedGroup.value.get(0).groupUid}]])" >离开</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <table class="table table-hover" >
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">昵称</th>
+                    <th scope="col">类型</th>
+                    <th scope="col">加入时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${joinedGroup.value}">
+                    <td th:text="${item.nikeName}"></td>
+                    <td th:text="${item.type}==1? '组长' : '组员'">Otto</td>
+                    <td th:text="${#temporals.format(item.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" id="groupQrCodeModal" tabindex="-1" role="dialog" aria-labelledby="groupQrCodeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 330px;" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="groupQrCodeModalLabel">邀请二维码</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="groupQrCodeDiv" class="modal-body text-center">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal" onclick="refreshGroup()">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- group create Modal -->
+        <div class="modal fade" id="createGroupModalCenter" tabindex="-1" role="dialog" aria-labelledby="createGroupModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createGroupModalCenterTitle">添加组</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="groupName">组名</label>
+                        <input id="groupName" class="form-control" type="text" placeholder="请输入组名">
+                        <label for="groupEmail">邮箱</label>
+                        <input id="groupEmail" class="form-control" type="email" placeholder="请输入邮箱">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" onclick="createGroup()">创建</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

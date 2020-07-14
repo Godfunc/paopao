@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'home')}">
+<head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
+    <title>PaoPao</title>
+    <script th:inline="javascript">
+        $(function () {
+            $('#mp').qrcode([[${mp}]]);
+        })
+    </script>
+</head>
+<body>
+    <div style="font-size: 1.1rem;">
+        <div class="row">
+            <div class="col col-lg-8">
+                <h1>PaoPao</h1>
+                <p>「PaoPao」，又名「泡泡」，是一个用来做消息通知的服务。</p>
+                <p> 比如：购票成功、服务报警等事件信息，通知到你的微信上。</p>
+                <p>
+                    如何使用？<br>
+                    1. 扫码关注微信公众号。<br>
+                    2. 点击<a th:href="@{/user/console}">控制台</a>，进行微信扫码登陆。<br>
+                    3. 获取到token，调用<a th:href="@{/message}">接口</a>通知。<br>
+                </p>
+            </div>
+            <div class="col col-lg-4 text-center">
+                <div id="mp"></div>
+                <div class="bg-info">请先关注此公众号</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

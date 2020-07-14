@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.godfunc.paopao.mapper.GroupMapper">
+
+    <select id="selectMyGroup" resultType="com.godfunc.paopao.model.GroupModel">
+        select id, name, group_uid, nike_name, user_id, type, create_time from t_group where group_uid in (select g.group_uid from t_user u left join t_group g on u.id = g.user_id AND g.type = 1 where u.token = #{token} order by g.create_time desc)
+    </select>
+    <select id="selectJoinedGroup" resultType="com.godfunc.paopao.model.GroupModel">
+        select id, name, group_uid, nike_name, user_id, type, create_time
+        from t_group
+        where group_uid in
+              (select g.group_uid from t_user u left join t_group g on u.id = g.user_id AND g.type = 2
+              where u.token = #{token} order by g.create_time desc)
+    </select>
+</mapper>

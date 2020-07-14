@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>auth</title>
+</head>
+<body>
+    <div th:if="${#strings.equals('success', status)}">授权完成</div>
+    <div th:if="${#strings.equals('fail', status)}">授权失败</div>
+</body>
+</html>

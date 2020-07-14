@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="bg-primary py-4 px-3" th:fragment="footer(config)">
+        <div class="container h-100">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h6 class="mb-4">
+                        COPYRIGHT
+                    </h6>
+                    <small th:text="'© 2017 - '+${#dates.format(#dates.createNow(), 'yyyy')}+ ' ' +${config.containsKey('FOOT_OWN')? config.get('FOOT_OWN') :'Godfunc' }">
+                    </small>
+                    <br>
+                    <small>
+                        Developed By <span th:text="${config.containsKey('FOOT_DEVELOP')? config.get('FOOT_DEVELOP') :'Godfunc' }"></span>
+                    </small>
+                    <br>
+                    <small>
+                        Version <span th:text="${config.containsKey('FOOT_VERSION')? config.get('FOOT_VERSION') :'1.0.0' }"></span>
+                    </small>
+                    <br>
+                    <small>
+                        Powered By <span th:text="${config.containsKey('FOOT_POWER')? config.get('FOOT_POWER') :'Spring and Thymeleaf' }"></span>
+                    </small>
+                </div>
+                <div class="d-none d-sm-block col-sm-3">
+                    <h6 class="mb-4">LINK</h6>
+                    <a target="_blank" class="btn px-0 py-0 text-dark mb-1" href="https://spring.io">Spring</a>
+                    <br>
+                    <a target="_blank" class="btn px-0 py-0 text-dark mb-1" href="https://www.thymeleaf.org">Thymeleaf</a>
+                    <br>
+                    <a target="_blank" class="btn px-0 py-0 text-dark" href="https://www.iconfont.cn">Iconfont</a>
+                </div>
+                <div class="d-none d-sm-block col-sm-3">
+                    <h6 class="mb-4">Resource</h6>
+                    <a target="_blank" class="btn px-0 py-0 text-dark" href="https://www.cnblogs.com/Godfunc/">cnblogs</a>
+                </div>
+                <div class="d-none d-sm-block col-sm-3">
+                    <h6 class="md-4">FOLLOW ME</h6>
+                    <a onclick="qrCodeClick()" data-toggle="modal" data-target="#footModal" class="btn text-dark pl-0 pr-lg-2 pr-1"><i
+                            class="iconfont icon-qrcode-1-copy" style="font-size: 1.5rem !important;"></i></a>
+  <!--                  <a onclick="weChatClick()" data-toggle="modal" data-target="#footModal" class="disabled btn text-dark px-lg-2 px-1"><i
+                            class="iconfont" style="font-size: 1.5rem;">&#xe615;</i></a>-->
+                    <a target="_blank" th:href="${config.containsKey('FOOT_GITHUB')? config.get('FOOT_GITHUB') :'https://github.com/godfunc' }" class="btn text-dark pr-0 pl-lg-2 pl-1">
+                        <i class="iconfont" style="font-size: 1.5rem !important;">&#xe7ab;</i></a>
+                </div>
+            </div>
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="footModal" tabindex="-1" role="dialog" aria-labelledby="footModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="footModalLabel">title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="qrCodeDiv" class="modal-body text-center">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            function weChatClick() {
+                $("#footModalLabel").text('WeChat');
+                $('#qrCodeDiv').html('');
+                $('#qrCodeDiv').qrcode('http://www.google.com');
+            }
+            function qrCodeClick() {
+                $("#footModalLabel").text('QR Code');
+                $('#qrCodeDiv').html('');
+                $('#qrCodeDiv').qrcode([[${config.containsKey('FOOT_WEBSITE')? config.get('FOOT_WEBSITE') :'https://godfunc.fun' }]]);
+            }
+        </script>
+    </div>
+</html>

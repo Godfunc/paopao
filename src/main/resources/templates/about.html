@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'about')}">
+<head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
+    <title>关于 - PaoPao</title>
+    <script th:inline="javascript">
+
+    </script>
+</head>
+<body>
+    <div class="text-center">
+        关于
+    </div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout (head, content, active)">
+<head th:replace="${head}">
+</head>
+<body class="bg-light">
+<!-- header -->
+<header th:replace="component/Header::header(active=${active})"></header>
+<!-- content -->
+<div class="container" style="margin-top: 73px;">
+        <div th:replace="${content}"></div>
+        <!--
+                    <div class="d-none d-lg-block col-lg-3" th:insert="portal/component/Sider::sider(${tags}, ${categories}, ${config})">
+        -->
+</div>
+</div>
+<!-- footer -->
+<!--    <footer class="mt-4" th:insert="portal/component/Footer::footer(${config})"></footer>-->
+</body>
+</html>

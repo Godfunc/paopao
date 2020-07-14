@@ -1,0 +1,33 @@
+server:
+  port: 9899
+  servlet:
+    context-path: /
+spring:
+  profiles:
+    active: dev
+  application:
+    name: paopao
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      auto-commit: true
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 30000
+      max-lifetime: 1200000
+mybatis-plus:
+  global-config:
+    banner: false
+    db-config:
+      id-type: id_worker_str
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+
+md5Key: 123456
+authUrl: ${host}/auth
+bindUrl: ${host}/bind
