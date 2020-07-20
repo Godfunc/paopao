@@ -3,29 +3,75 @@
       th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'login')}">
 <head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
     <title>登陆 - PaoPao</title>
+    <script th:src="@{/js/sockjs.min.js}"></script>
+    <script th:src="@{/js/stomp.min.js}"></script>
     <script th:inline="javascript">
-        function queryLogin() {
-            $.getJSON([[@{/user/queryLogin}]], function (data) {
-                if (data.code === 0) {
+        var stompClient,socket;
+        $(document).ready(function () {
+            if (window.WebSocket){
+                $('#qrCodeDiv').qrcode([[${qrCode}]]);
+                websocketConfig();
+            } else {
+                alert("错误","浏览器不支持websocket技术通讯.");
+            }
+        });
+
+        function websocketConfig() {
+            socket = new SockJS([[@{/myEndPoint}]]);
+
+            sockHandle();
+
+            stompClient = Stomp.over(socket);
+
+            stompClient.heartbeat.outgoing = 10000;
+            stompClient.heartbeat.incoming = 0;
+
+            var headers = {id:[[${id}]]};
+
+            stompClient.connect(headers,function (frame) {
+                stompClient.subscribe("/user/message",function (message) {
+                    const token = message.body;
                     var date = new Date();
                     date.setTime(date.getTime()+7*24*3600*1000)
-                    document.cookie = 'token=' + escape(data.data) +';path=/;expires='+date.toUTCString();
-                    clearInterval(time);
+                    document.cookie = 'token=' + escape(token) +';path=/;expires='+date.toUTCString();
+                    disconnect();
                     window.location.href = [[@{/user/console}]]
-                } else {
-                    return false;
-                }
+                });
+            }, function (error) {
+                console.log('STOMP: ' + error);
+                console.log('STOMP: Reconnecting in 10 seconds');
             });
         }
 
-        var time;
-        $(function () {
-            $('#qrCodeDiv').qrcode([[${qrCode}]]);
-            queryLogin();
-            time = setInterval(function () {
-                queryLogin();
-            }, 20100);
-        })
+        function sockHandle() {
+            socket.onopen = function () {
+                console.log("------连接成功------");
+            };
+
+            // 监听接受到服务器的消息
+            socket.onmessage = function (event) {
+                console.log('-------收到的消息: ' + event.data);
+            };
+
+            // 关闭连接的回调函数
+            socket.onclose = function (event) {
+                console.log('--------关闭连接: connection closed.------');
+            };
+
+            // 连接发生错误
+            socket.onerror = function () {
+                alert("连接错误", "网络超时或通讯地址错误.");
+                disconnect();
+            } ;
+        }
+
+        // 关闭websocket
+        function disconnect() {
+            if (socket != null) {
+                socket.close();
+                socket = null;
+            }
+        }
     </script>
 </head>
 <body>

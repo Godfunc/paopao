@@ -1,5 +1,3 @@
-
-
 package com.godfunc.paopao.config;
 
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

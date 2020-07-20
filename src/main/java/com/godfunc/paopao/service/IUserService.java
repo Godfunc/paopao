@@ -20,8 +20,6 @@ public interface IUserService extends IService<User> {
 
     String getLoginQrCode(String sessionId);
 
-    String queryLogin(String sessionId);
-
     String console(String token, Model model);
 
     User getByToken(String token);

@@ -31,22 +31,12 @@ public class UserController {
     @GetMapping("login")
     public String login(HttpSession session, Model model) {
         model.addAttribute("qrCode", userService.getLoginQrCode(session.getId()));
+        model.addAttribute("id", session.getId());
         return "login";
     }
 
-    @GetMapping("queryLogin")
-    @ResponseBody
-    public R queryLogin(HttpSession httpSession) {
-        String token = userService.queryLogin(httpSession.getId());
-        if (token != null) {
-            return R.ok(token);
-        } else {
-            return R.failed("not found");
-        }
-    }
-
     @GetMapping("console")
-    public String console(@CookieValue String token, Model model) {
+    public String console(@CookieValue(required = false) String token, Model model) {
         return userService.console(token, model);
     }
 

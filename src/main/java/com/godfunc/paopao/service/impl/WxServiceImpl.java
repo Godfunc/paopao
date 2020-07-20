@@ -6,7 +6,6 @@ import com.godfunc.paopao.entity.User;
 import com.godfunc.paopao.service.IGroupService;
 import com.godfunc.paopao.service.IUserService;
 import com.godfunc.paopao.service.IWxService;
-import com.godfunc.paopao.util.CacheUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -19,6 +18,7 @@ import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -42,6 +42,8 @@ public class WxServiceImpl implements IWxService {
     private IUserService userService;
     @Autowired
     private IGroupService groupService;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
 
     @Override
@@ -96,7 +98,8 @@ public class WxServiceImpl implements IWxService {
                 userService.updateById(user);
             }
         }
-        CacheUtils.getInstance().putCache(state, user.getToken());
+        // 发送 token 给 客户端
+        simpMessagingTemplate.convertAndSendToUser(state, "/message", user.getToken());
         return true;
     }
 

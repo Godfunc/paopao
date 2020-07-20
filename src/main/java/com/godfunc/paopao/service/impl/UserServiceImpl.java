@@ -13,7 +13,6 @@ import com.godfunc.paopao.model.UserInfoModel;
 import com.godfunc.paopao.param.GroupCreateParam;
 import com.godfunc.paopao.service.IGroupService;
 import com.godfunc.paopao.service.IUserService;
-import com.godfunc.paopao.util.CacheUtils;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -26,7 +25,6 @@ import org.springframework.ui.Model;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,27 +56,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public String getLoginQrCode(String sessionId) {
         log.debug("getLoginQrCode sessionId={}", sessionId);
         return getAuthorizationUrl(authUrl, sessionId);
-    }
-
-    @Override
-    public String queryLogin(String sessionId) {
-        log.debug("queryLogin sessionId={}", sessionId);
-        for (int i = 0; i < 10; i++) {
-            String token = CacheUtils.getInstance().getCache(sessionId);
-            if (StringUtils.isNotBlank(token)) {
-                CacheUtils.getInstance().removeCache(sessionId);
-                return token;
-            } else {
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                    log.error("queryLogin sleep 异常", e);
-                    return null;
-                }
-            }
-        }
-        return null;
-
     }
 
     @Override
