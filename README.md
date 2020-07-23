@@ -1,5 +1,5 @@
 ##
-**[paopao](https://paopao.godfunc.fun)** 是一个开源的微信消息通知服务。
+**[paopao](https://paopao.godfunc.fun)** 是一个使用Java开发的开源的微信消息通知服务。
 
 ![build](https://github.com/Godfunc/paopao/workflows/build/badge.svg)
 ![release](https://img.shields.io/github/release/Godfunc/paopao.svg)

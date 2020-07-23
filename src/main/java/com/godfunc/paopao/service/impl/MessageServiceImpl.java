@@ -91,6 +91,7 @@ public class MessageServiceImpl implements IMessageService {
 
     @Override
     public R send2Group(String token, String groupUid, String type, String msg, String link) {
+        // TODO 优化代码
         User user = userService.getByToken(token);
         if (user == null) {
             return R.failed("接收用户不存在");
