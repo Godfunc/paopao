@@ -1,10 +1,10 @@
 ## 简介
 **[paopao](https://paopao.godfunc.fun)** 是一个使用Java开发的开源的微信消息通知服务。支持一对对消息推送和一对多消息推送。
 
-![build](https://github.com/Godfunc/paopao/workflows/build/badge.svg)
-![release](https://img.shields.io/github/release/Godfunc/paopao.svg)
-![downloads](https://img.shields.io/github/downloads/Godfunc/paopao/total.svg)
-![license](https://img.shields.io/github/license/Godfunc/paopao)
+<img alt="build" src="https://github.com/Godfunc/paopao/workflows/build/badge.svg">
+<img alt="release" src="https://img.shields.io/github/release/Godfunc/paopao.svg">
+<img alt="downloads" src="https://img.shields.io/github/downloads/Godfunc/paopao/total.svg">
+<img alt="license" src="https://img.shields.io/github/license/Godfunc/paopao">
 
 ## 快速开始
 ### 微信公众号信息配置
@@ -39,5 +39,4 @@
 * SpringBoot
 * MyBatis-Plus（数据库操作）
 * Thymeleaf（HTML模版引擎）
-* Bootstrap
 * Websocket（用来做微信扫码登陆）
