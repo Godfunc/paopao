@@ -30,18 +30,6 @@ public class TemplateController {
         return "message";
     }
 
-    @GetMapping("/message-alias")
-    public String messageAlias(Model model) {
-        model.addAttribute("host", host);
-        return "message-alias";
-    }
-
-    @GetMapping("/message-group")
-    public String messageGroup(Model model) {
-        model.addAttribute("host", host);
-        return "message-group";
-    }
-
     @GetMapping("/about")
     public String about() {
         return "about";

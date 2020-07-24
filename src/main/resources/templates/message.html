@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'message')}">
 <head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
-    <title>消息发送(自己) - PaoPao</title>
+    <title>消息发送 - PaoPao</title>
     <script th:inline="javascript">
         function sendMessage() {
             const token = $('#inputToken').val();
@@ -29,47 +29,211 @@
             }
             }, 'json' );
         }
+
+        function sendAliasMessage() {
+            const token = $('#inputToken2').val();
+            const alias = $('#inputAlias2').val();
+            const message = $('#inputMessage2').val();
+            const link = $('#inputLink2').val();
+            const type = $('#inputType2').val();
+            if (!token) {
+                alert('请输入您的token')
+            }
+            if (!alias) {
+                alert('请输入接收方的alias')
+            }
+            if (!message) {
+                alert('请输入要发送的消息')
+            }
+            const encodeMessage = encodeURI(message);
+            $.post([[@{/}]]+token+'/sendToAlias/'+alias+'?msg='+encodeMessage+'&type='+type+'&link='+link, {}, function (data) {
+                $('#sendInfo2').removeClass('text-success');
+            $('#sendInfo2').removeClass('text-danger');
+            $('#sendInfo2').html('');
+            if (data.code === 0) {
+                $('#sendInfo2').addClass('text-success');
+                $('#sendInfo2').html('消息发送成功');
+            } else {
+                $('#sendInfo2').addClass('text-danger');
+                $('#sendInfo2').html(data.msg);
+            }
+        }, 'json');
+        }
+
+        function sendGroupMessage() {
+            const token = $('#inputToken3').val();
+            const message = $('#inputMessage3').val();
+            const groupUid = $('#inputGroupUid3').val();
+            const link = $('#inputLink3').val();
+            const type = $('#inputType3').val();
+            if (!token) {
+                alert('请输入您的token')
+            }
+            if (!groupUid) {
+                alert('请输入您的groupUid')
+            }
+            if (!message) {
+                alert('请输入要发送的消息')
+            }
+            const encodeMessage = encodeURI(message);
+            $.post([[@{/}]]+token+'/sendToGroup/'+groupUid+'?msg='+encodeMessage + '&type='+type+'&link='+link, {}, function (data) {
+                $('#sendInfo3').removeClass('text-success');
+            $('#sendInfo3').removeClass('text-danger');
+            $('#sendInfo3').html('');
+            if (data.code === 0) {
+                $('#sendInfo3').addClass('text-success');
+                $('#sendInfo3').html('消息发送成功');
+            } else {
+                $('#sendInfo3').addClass('text-danger');
+                $('#sendInfo3').html(data.msg);
+            }
+        }, 'json' );
+        }
     </script>
 </head>
 <body>
-<div class="row">
-    <div class="col-lg-8 col">
-        <div class="p-4 rounded" style="background-color: #d6dce2;">
-            <div class="form-group">
-                <h4>消息发送</h4>
-                <label for="inputToken">Token（接收方）</label>
-                <input type="text" class="form-control" id="inputToken" placeholder="您的token值">
-            </div>
-            <div class="form-group">
-                <label for="inputMessage">消息</label>
-                <textarea class="form-control" id="inputMessage" placeholder="消息内容"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="inputType">类型</label>
-                <input type="text" class="form-control" id="inputType" placeholder="(非必须)发送消息的类型">
-            </div>
-            <div class="form-group">
-                <label for="inputLink">链接</label>
-                <input type="text" class="form-control" id="inputLink" placeholder="(非必须)要跳转的地址">
-            </div>
-            <button type="button" onclick="sendMessage()" class="btn btn-primary">发送</button>
-            <span id="sendInfo" class="ml-3"></span>
-        </div>
-        <div class="mt-4">
-            <div>消息发送接口：</div>
-            <div class="alert alert-info my-3" style="max-width: 650px;">
-                [[${host}]]/{token}/send?msg={message}&type={type}&link={link}
-            </div>
-            <p>接收两个参数：</p>
-            <ul>
-                <li><p>token：接收方的token值，登陆控制台之后可以看到。</p></li>
-                <li><p>message：要发送的消息内容。（注意：如果您是使用url拼接，需要对message进行urlencode）</p></li>
-                <li><p>type：消息类型，默认为空表示使用模版消息发送，（KF）使用客服消息发送。</p></li>
-                <li><p>link：携带的链接地址。（注意：如果您是使用url拼接，需要对link进行urlencode）</p></li>
+<div>
+    <div class="row">
+        <div class="col-lg-8 col">
+            <ul class="nav nav-tabs" id="messageTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#mine" role="tab"
+                       aria-controls="mine"
+                       aria-selected="true">自己</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#other" role="tab"
+                       aria-controls="other"
+                       aria-selected="false">他人</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#group" role="tab"
+                       aria-controls="group"
+                       aria-selected="false">群发</a>
+                </li>
             </ul>
+            <div class="tab-content" id="messageTabContent">
+                <div class="tab-pane fade show active" id="mine" role="tabpanel" aria-labelledby="mine-tab">
+                    <div class="p-4 rounded" style="background-color: #d6dce2;">
+                        <div class="form-group">
+                            <h4>消息发送</h4>
+                            <label for="inputToken">Token（接收方）</label>
+                            <input type="text" class="form-control" id="inputToken" placeholder="您的token值">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMessage">消息</label>
+                            <textarea class="form-control" id="inputMessage" placeholder="消息内容"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputType">类型</label>
+                            <input type="text" class="form-control" id="inputType" placeholder="(非必须)发送消息的类型">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLink">链接</label>
+                            <input type="text" class="form-control" id="inputLink" placeholder="(非必须)要跳转的地址">
+                        </div>
+                        <button type="button" onclick="sendMessage()" class="btn btn-primary">发送</button>
+                        <span id="sendInfo" class="ml-3"></span>
+                    </div>
+                    <div class="mt-4">
+                        <div>消息发送接口：</div>
+                        <div class="alert alert-info my-3" style="max-width: 600px;">
+                            [[${host}]]/{token}/send?msg={message}&type={type}&link={link}
+                        </div>
+                        <p>接收两个参数：</p>
+                        <ul>
+                            <li><p>token：接收方的token值，登陆控制台之后可以看到。</p></li>
+                            <li><p>message：要发送的消息内容。（注意：如果您是使用url拼接，需要对message进行urlencode）</p></li>
+                            <li><p>type：消息类型，默认为空表示使用模版消息发送，（KF）使用客服消息发送。</p></li>
+                            <li><p>link：携带的链接地址。（注意：如果您是使用url拼接，需要对link进行urlencode）</p></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab">
+                    <div class="p-4 rounded" style="background-color: #d6dce2;">
+                        <div class="form-group">
+                            <h4>给他人发消息</h4>
+                            <label for="inputToken2">Token（发送方）</label>
+                            <input type="text" class="form-control" id="inputToken2" placeholder="您的token值">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAlias2">Alias（接收方）</label>
+                            <input type="text" class="form-control" id="inputAlias2" placeholder="接收方的Alias值">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMessage2">消息</label>
+                            <textarea class="form-control" id="inputMessage2" placeholder="消息内容"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputType2">类型</label>
+                            <input type="text" class="form-control" id="inputType2" placeholder="(非必须)发送消息的类型">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLink2">链接</label>
+                            <input type="text" class="form-control" id="inputLink2" placeholder="(非必须)要跳转的地址">
+                        </div>
+                        <button type="button" onclick="sendAliasMessage()" class="btn btn-primary">发送</button>
+                        <span id="sendInfo2" class="ml-3"></span>
+                    </div>
+                    <div class="mt-4">
+                        <div>消息发送接口：</div>
+                        <div class="alert alert-info my-3" style="max-width: 650px;">
+                            [[${host}]]/{token}/sendToAlias/{alias}?msg={message}&type={type}&link={link}
+                        </div>
+                        <p>接收参数：</p>
+                        <ul>
+                            <li><p>token：发送方的token值，登陆控制台之后可以看到。</p></li>
+                            <li><p>alias：接收方的alias值，需要接收方提供，登陆控制台之后可以看到。</p></li>
+                            <li><p>message：要发送的消息内容。（注意：如果您是使用url拼接，需要对message进行urlencode）</p></li>
+                            <li><p>type：消息类型，默认为空表示使用模版消息发送，（KF）使用客服消息发送。</p></li>
+                            <li><p>link：携带的链接地址。（注意：如果您是使用url拼接，需要对link进行urlencode）</p></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="group" role="tabpanel" aria-labelledby="group-tab">
+                    <div class="p-4 rounded" style="background-color: #d6dce2;">
+                        <div class="form-group">
+                            <h4>消息群发</h4>
+                            <label for="inputToken3">Token（发送方）</label>
+                            <input type="text" class="form-control" id="inputToken3" placeholder="您的token值">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGroupUid3">组id（接收组）</label>
+                            <input type="text" class="form-control" id="inputGroupUid3" placeholder="接收组的id">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputMessage3">消息</label>
+                            <textarea class="form-control" id="inputMessage3" placeholder="消息内容"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputType3">类型</label>
+                            <input type="text" class="form-control" id="inputType3" placeholder="(非必须)发送消息的类型">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLink3">链接</label>
+                            <input type="text" class="form-control" id="inputLink3" placeholder="(非必须)要跳转的地址">
+                        </div>
+                        <button type="button" onclick="sendGroupMessage()" class="btn btn-primary">发送</button>
+                        <span id="sendInfo3" class="ml-3"></span>
+                    </div>
+                    <div class="mt-4">
+                        <div>消息发送接口：</div>
+                        <div class="alert alert-info my-3" style="max-width: 690px;">
+                            [[${host}]]/{token}/sendToGroup/{groupUid}?msg={message}&type={type}&link={link}
+                        </div>
+                        <p>接收两个参数：</p>
+                        <ul>
+                            <li><p>token：发送方的token值，登陆控制台之后可以看到。</p></li>
+                            <li><p>groupUid：接收组的id值，登陆控制台之后可以看到。</p></li>
+                            <li><p>message：要发送的消息内容。（注意：如果您是使用url拼接，需要对message进行urlencode）</p></li>
+                            <li><p>type：消息类型，默认为空表示使用模版消息发送，（KF）使用客服消息发送。</p></li>
+                            <li><p>link：携带的链接地址。（注意：如果您是使用url拼接，需要对link进行urlencode）</p></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-4 col">
+        <div class="col-lg-4 col"></div>
     </div>
 </div>
 </body>
