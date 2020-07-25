@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.godfunc'
-version = '0.0.1-SNAPSHOT'
+version = 'v1.0'
 sourceCompatibility = '1.8'
 
 repositories {
