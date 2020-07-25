@@ -82,6 +82,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R createGroup(String token, GroupCreateParam param) {
+        if(StringUtils.isBlank(token)) {
+            return R.failed("请重新登陆");
+        }
         User user = getByToken(token);
         if (user == null) {
             return R.failed("登陆已过期或用户不存在，请重新扫码登陆");
@@ -126,6 +129,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R getGroupQrCode(String token, String groupUid) {
+        if(StringUtils.isBlank(token)) {
+            return R.failed("请重新登陆");
+        }
         User user = getByToken(token);
         if (user == null) {
             return R.failed("请重新登陆");
@@ -140,6 +146,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R groupNumberDelete(String token, String groupId) {
+        if(StringUtils.isBlank(token)) {
+            return R.failed("请重新登陆");
+        }
         User user = getByToken(token);
         if (user == null) {
             return R.failed("请重新登陆");
@@ -170,6 +179,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R deleteGroup(String token, String groupUid) {
+        if(StringUtils.isBlank(token)) {
+            return R.failed("请重新登陆");
+        }
         User user = getByToken(token);
         if(user == null) {
             return R.failed("请重新登陆");

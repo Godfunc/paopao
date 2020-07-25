@@ -43,24 +43,24 @@ public class UserController {
 
     @PostMapping("create")
     @ResponseBody
-    public R create(@CookieValue String token, GroupCreateParam param) {
+    public R create(@CookieValue(required = false) String token, GroupCreateParam param) {
         return userService.createGroup(token, param);
 
     }
 
     @GetMapping("groupQrCode/{groupUid}")
     @ResponseBody
-    public R getGroupQrCode(@CookieValue String token, @PathVariable String groupUid) {
+    public R getGroupQrCode(@CookieValue(required = false) String token, @PathVariable String groupUid) {
         return userService.getGroupQrCode(token, groupUid);
     }
     @PostMapping("deleteGroup/{groupUid}")
     @ResponseBody
-    public R deleteGroup(@CookieValue String token, @PathVariable String groupUid) {
+    public R deleteGroup(@CookieValue(required = false) String token, @PathVariable String groupUid) {
         return userService.deleteGroup(token, groupUid);
     }
     @PostMapping("groupNumberDelete/{groupId}")
     @ResponseBody
-    public R groupNumberDelete(@CookieValue String token, @PathVariable String groupId) {
+    public R groupNumberDelete(@CookieValue(required = false) String token, @PathVariable String groupId) {
         return userService.groupNumberDelete(token, groupId);
     }
 
