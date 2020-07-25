@@ -26,5 +26,5 @@ jobs:
       - name: Archive jar
         uses: actions/upload-artifact@v1
         with:
-          name: paopao-0.0.1-SNAPSHOT.jar
+          name: paopao-v1.0.jar
           path: build/libs/paopao-v1.0.jar
