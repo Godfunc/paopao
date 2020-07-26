@@ -9,6 +9,7 @@ spring:
 
 host: http://localhost # 服务host
 mpQrCode: http://weixin.qq.com/r/xxxxxxx # 微信公众号链接
+templateId: 3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM # 消息模板id
 
 wx:
   mp:

@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Godfunc
@@ -35,6 +36,8 @@ public class WxServiceImpl implements IWxService {
 
     @Value("${md5Key}")
     private String md5Key;
+    @Value("${templateId}")
+    private String templateId;
 
     @Autowired
     private WxMpService wxMpService;
@@ -49,8 +52,7 @@ public class WxServiceImpl implements IWxService {
     @Override
     public WxMpOAuth2AccessToken getAccessToken(String code) {
         try {
-            WxMpOAuth2AccessToken accessToken = wxMpService.oauth2getAccessToken(code);
-            return accessToken;
+            return wxMpService.oauth2getAccessToken(code);
         } catch (WxErrorException e) {
             log.error("获取accessToken异常", e);
         }
@@ -60,8 +62,7 @@ public class WxServiceImpl implements IWxService {
     @Override
     public WxMpUser getUserInfo(WxMpOAuth2AccessToken accessToken) {
         try {
-            WxMpUser userInfo = wxMpService.oauth2getUserInfo(accessToken, "zh_CN");
-            return userInfo;
+            return wxMpService.oauth2getUserInfo(accessToken, "zh_CN");
         } catch (WxErrorException e) {
             log.error("获取userInfo异常", e);
         }
@@ -117,9 +118,9 @@ public class WxServiceImpl implements IWxService {
     public String sendTempMsg(String openid, String msg, String link) throws WxErrorException {
         WxMpTemplateMessage wxMpTemplateMessage = WxMpTemplateMessage.builder()
                 .toUser(openid)
-                .templateId("3WdYYS4jpz3nPWWVRehUK0oLBo7WN4A_6L56FlDVIUM")
+                .templateId(templateId)
                 .url(link)
-                .data(Arrays.asList(new WxMpTemplateData("msg", msg)))
+                .data(Collections.singletonList(new WxMpTemplateData("msg", msg)))
                 .build();
         return wxMpService.getTemplateMsgService().sendTemplateMsg(wxMpTemplateMessage);
     }
