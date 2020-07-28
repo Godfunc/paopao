@@ -66,7 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return "redirect:/user/login";
         } else {
             UserInfoModel userInfoModel = new UserInfoModel();
-            userInfoModel.setAlias(userInfoModel.getAlias());
+            userInfoModel.setAlias(user.getAlias());
             userInfoModel.setNikeName(user.getNikeName());
             userInfoModel.setToken(user.getToken());
             Map<String, List<GroupModel>> myGroup = groupService.selectMyGroup(userInfoModel.getToken());

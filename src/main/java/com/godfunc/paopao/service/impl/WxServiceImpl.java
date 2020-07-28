@@ -152,7 +152,7 @@ public class WxServiceImpl implements IWxService {
                     model.addAttribute("status", CommonConstant.STATUS_FAIL);
                     model.addAttribute("msg", "组不存在或已被删除");
                 } else {
-                    if (groupService.checkNumber(user.getId(), group.getGroupUid())) {
+                    if (group.getUserId().equals(user.getId()) || groupService.checkNumber(user.getId(), group.getGroupUid())) {
                         model.addAttribute("status", CommonConstant.STATUS_SUCCESS);
                         model.addAttribute("msg", "您已是【" + group.getName() + "】中的成员了");
                     } else {
