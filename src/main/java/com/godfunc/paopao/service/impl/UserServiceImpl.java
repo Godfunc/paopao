@@ -59,13 +59,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public String console(String token, Model model) {
-        log.debug("console token = {}", token);
-        UserInfoModel userInfoModel = this.baseMapper.selectInfo(token);
-        if (userInfoModel == null) {
+    public String console(User user, Model model) {
+        log.debug("console token = {}", user);
+        if (user == null) {
             // 用户不存在
             return "redirect:/user/login";
         } else {
+            UserInfoModel userInfoModel = new UserInfoModel();
+            userInfoModel.setAlias(userInfoModel.getAlias());
+            userInfoModel.setNikeName(user.getNikeName());
+            userInfoModel.setToken(user.getToken());
             Map<String, List<GroupModel>> myGroup = groupService.selectMyGroup(userInfoModel.getToken());
             Map<String, List<GroupModel>> joinedGroup = groupService.selectJoinedGroup(userInfoModel.getToken());
             userInfoModel.setMyGroups(myGroup);
@@ -81,11 +84,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public R createGroup(String token, GroupCreateParam param) {
-        if(StringUtils.isBlank(token)) {
-            return R.failed("请重新登陆");
-        }
-        User user = getByToken(token);
+    public R createGroup(User user, GroupCreateParam param) {
         if (user == null) {
             return R.failed("登陆已过期或用户不存在，请重新扫码登陆");
         } else if (StringUtils.isBlank(user.getOpenid())) {
@@ -128,11 +127,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public R getGroupQrCode(String token, String groupUid) {
-        if(StringUtils.isBlank(token)) {
-            return R.failed("请重新登陆");
-        }
-        User user = getByToken(token);
+    public R getGroupQrCode(User user, String groupUid) {
         if (user == null) {
             return R.failed("请重新登陆");
         }
@@ -145,11 +140,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public R groupNumberDelete(String token, String groupId) {
-        if(StringUtils.isBlank(token)) {
-            return R.failed("请重新登陆");
-        }
-        User user = getByToken(token);
+    public R groupNumberDelete(User user, String groupId) {
         if (user == null) {
             return R.failed("请重新登陆");
         }
@@ -178,11 +169,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public R deleteGroup(String token, String groupUid) {
-        if(StringUtils.isBlank(token)) {
-            return R.failed("请重新登陆");
-        }
-        User user = getByToken(token);
+    public R deleteGroup(User user, String groupUid) {
         if(user == null) {
             return R.failed("请重新登陆");
         }
@@ -196,6 +183,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return R.ok("删除删除");
         }
         return R.failed("删除组失败");
+    }
+
+    @Override
+    public R leaveGroup(User user, String groupUid) {
+        if(user == null) {
+            return R.failed("请重新登陆");
+        }
+        if(groupService.levelGroup(user.getId(), groupUid)) {
+            return R.ok("离开成功");
+        } else {
+            return R.failed("改组不存在或您已不在组中");
+        }
     }
 
     @Override

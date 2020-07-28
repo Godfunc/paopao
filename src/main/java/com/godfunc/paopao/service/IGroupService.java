@@ -31,4 +31,5 @@ public interface IGroupService extends IService<Group> {
 
     boolean deleteByGroupUid(String groupUid);
 
+    boolean levelGroup(String userId, String groupUid);
 }

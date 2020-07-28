@@ -2,6 +2,9 @@ package com.godfunc.paopao.controller;
 
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.annotation.Login;
+import com.godfunc.paopao.annotation.LoginUser;
+import com.godfunc.paopao.entity.User;
 import com.godfunc.paopao.param.GroupCreateParam;
 import com.godfunc.paopao.service.IUserService;
 import org.springframework.stereotype.Controller;
@@ -35,33 +38,47 @@ public class UserController {
         return "login";
     }
 
+    @Login
     @GetMapping("console")
-    public String console(@CookieValue(required = false) String token, Model model) {
-        return userService.console(token, model);
+    public String console(@LoginUser User user, Model model) {
+        return userService.console(user, model);
     }
 
 
+    @Login
     @PostMapping("create")
     @ResponseBody
-    public R create(@CookieValue(required = false) String token, GroupCreateParam param) {
-        return userService.createGroup(token, param);
+    public R create(@LoginUser User user, GroupCreateParam param) {
+        return userService.createGroup(user, param);
 
     }
 
+    @Login
     @GetMapping("groupQrCode/{groupUid}")
     @ResponseBody
-    public R getGroupQrCode(@CookieValue(required = false) String token, @PathVariable String groupUid) {
-        return userService.getGroupQrCode(token, groupUid);
+    public R getGroupQrCode(@LoginUser User user, @PathVariable String groupUid) {
+        return userService.getGroupQrCode(user, groupUid);
     }
+
+    @Login
     @PostMapping("deleteGroup/{groupUid}")
     @ResponseBody
-    public R deleteGroup(@CookieValue(required = false) String token, @PathVariable String groupUid) {
-        return userService.deleteGroup(token, groupUid);
+    public R deleteGroup(@LoginUser User user, @PathVariable String groupUid) {
+        return userService.deleteGroup(user, groupUid);
     }
+
+    @Login
     @PostMapping("groupNumberDelete/{groupId}")
     @ResponseBody
-    public R groupNumberDelete(@CookieValue(required = false) String token, @PathVariable String groupId) {
-        return userService.groupNumberDelete(token, groupId);
+    public R groupNumberDelete(@LoginUser User user, @PathVariable String groupId) {
+        return userService.groupNumberDelete(user, groupId);
+    }
+
+    @Login
+    @PostMapping("leaveGroup/{groupUid}")
+    @ResponseBody
+    public R leaveGroup(@LoginUser User user, @PathVariable String groupUid) {
+        return userService.leaveGroup(user, groupUid);
     }
 
 }

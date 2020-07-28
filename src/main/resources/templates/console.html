@@ -54,6 +54,18 @@
                 }
             }, 'json');
         }
+
+        function leaveGroup(groupUid) {
+            $.post([[@{/user/leaveGroup/}]]+groupUid, {}, function (data) {
+                if (data.code === 0) {
+                    window.location.href = [[@{/user/console}]]
+                } else {
+                    alert(data.msg)
+                }
+            }, 'json');
+        }
+
+
     </script>
 </head>
 <body>

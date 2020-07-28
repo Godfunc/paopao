@@ -8,6 +8,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.godfunc.paopao.constant.CommonConstant;
+import com.godfunc.paopao.inpercept.AuthorizationInterceptor;
+import com.godfunc.paopao.resolver.LoginUserHandlerMethodArgumentResolver;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +20,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
@@ -27,7 +32,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Configuration
+@AllArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    private final AuthorizationInterceptor authorizationInterceptor;
+    private final LoginUserHandlerMethodArgumentResolver loginUserHandlerMethodArgumentResolver;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authorizationInterceptor).addPathPatterns("/**");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(loginUserHandlerMethodArgumentResolver);
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

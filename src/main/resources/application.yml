@@ -31,3 +31,7 @@ mybatis-plus:
 md5Key: 123456
 authUrl: ${host}/auth
 bindUrl: ${host}/bind
+
+jwt:
+  secret: 76FDDCAASEQW231224
+  expire: 604800

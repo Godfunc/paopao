@@ -1,5 +1,6 @@
 package com.godfunc.paopao.service.impl;
 
+import com.godfunc.paopao.config.JwtConfig;
 import com.godfunc.paopao.constant.CommonConstant;
 import com.godfunc.paopao.entity.Group;
 import com.godfunc.paopao.entity.User;
@@ -47,6 +48,8 @@ public class WxServiceImpl implements IWxService {
     private IGroupService groupService;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private JwtConfig jwtConfig;
 
 
     @Override
@@ -100,7 +103,7 @@ public class WxServiceImpl implements IWxService {
             }
         }
         // 发送 token 给 客户端
-        simpMessagingTemplate.convertAndSendToUser(state, "/message", user.getToken());
+        simpMessagingTemplate.convertAndSendToUser(state, "/message", jwtConfig.createToken(user.getId()));
         return true;
     }
 

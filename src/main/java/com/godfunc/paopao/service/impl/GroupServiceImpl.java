@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements IGroupService {
 
 
-
     @Override
     public Map<String, List<GroupModel>> selectMyGroup(String token) {
         List<GroupModel> list = this.baseMapper.selectMyGroup(token);
@@ -60,6 +59,11 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     }
 
     @Override
+    public boolean levelGroup(String userId, String groupUid) {
+        return remove(Wrappers.<Group>lambdaQuery().eq(Group::getUserId, userId).eq(Group::getGroupUid, groupUid));
+    }
+
+    @Override
     public Group getCreatorByGroupUid(String groupUid) {
         return getOne(Wrappers.<Group>lambdaQuery().eq(Group::getGroupUid, groupUid).eq(Group::getType, CommonConstant.CREATOR));
     }
@@ -81,7 +85,6 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, Group> implements
     public boolean checkNumber(String userId, String groupUid) {
         return count(Wrappers.<Group>lambdaQuery().eq(Group::getUserId, userId).eq(Group::getGroupUid, groupUid).eq(Group::getType, CommonConstant.NUMBER)) > 0;
     }
-
 
 
 }

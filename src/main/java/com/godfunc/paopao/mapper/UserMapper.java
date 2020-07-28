@@ -14,5 +14,4 @@ import com.godfunc.paopao.model.UserInfoModel;
  */
 public interface UserMapper extends BaseMapper<User> {
 
-    UserInfoModel selectInfo(String token);
 }

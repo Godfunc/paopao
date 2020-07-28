@@ -20,19 +20,22 @@ public interface IUserService extends IService<User> {
 
     String getLoginQrCode(String sessionId);
 
-    String console(String token, Model model);
+    String console(User user, Model model);
 
     User getByToken(String token);
 
-    R createGroup(String token, GroupCreateParam param);
+    R createGroup(User user, GroupCreateParam param);
 
     User getByOpenId(String openId);
 
-    R getGroupQrCode(String token, String groupUid);
+    R getGroupQrCode(User user, String groupUid);
 
-    R groupNumberDelete(String token, String groupId);
+    R groupNumberDelete(User user, String groupId);
 
     User getByAlias(String alias);
 
-    R deleteGroup(String token, String groupUid);
+    R deleteGroup(User user, String groupUid);
+
+    R leaveGroup(User user, String groupUid);
+
 }

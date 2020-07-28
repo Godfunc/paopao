@@ -33,4 +33,5 @@ public class CommonConstant {
     public static final String MSG_TYPE_KF = "KF";
 
     public static final String SENDER_INFO = "\n发送方：";
+    public static final String USER_ID = "USER_ID";
 }

@@ -2,7 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.godfunc.paopao.mapper.UserMapper">
 
-    <select id="selectInfo" resultType="com.godfunc.paopao.model.UserInfoModel">
-        select * from t_user where token = #{token}
-    </select>
 </mapper>
