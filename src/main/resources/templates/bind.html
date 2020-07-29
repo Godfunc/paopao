@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>绑定组中...</title>
+    <title>绑定组</title>
+    <script th:inline="javascript">
+        let total = 5 * 1000; //5秒关闭
+        let interval;
+
+        function clock() {
+            total -= 1000;
+            document.getElementById('time').innerText = parseInt(total) / 1000
+            if (total <= 0) {
+                window.clearInterval(interval)
+                WeixinJSBridge.invoke('closeWindow', {}, function (res) {
+                });
+            }
+        }
+
+        window.onload = function () {
+            if ('success' == [[${status}]]) {
+                interval = setInterval('clock()', 1000);
+            }
+        }
+    </script>
 </head>
-<body>
-    <div th:if="${#strings.equals('success', status)}" th:text="${msg}"></div>
-    <div th:if="${#strings.equals('fail', status)}" th:text="${msg}"></div>
+<body style="text-align: center;">
+<h2 th:if="${#strings.equals('success', status)}" style="margin-top: 50px; color: #28a745;" th:text="${msg}"></h2>
+<h2 th:if="${#strings.equals('fail', status)}" style="margin-top: 50px; color: #dc3545;" th:text="${msg}"></h2>
+<h3 th:if="${#strings.equals('success', status)}" style="color: #ffc107;">自动关闭：<span id="time" style="color: #a07905">5</span>
+</h3>
 </body>
 </html>
