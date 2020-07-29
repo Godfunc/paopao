@@ -12,6 +12,7 @@ import com.godfunc.paopao.service.IWxService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Godfunc
@@ -35,6 +39,8 @@ public class MessageServiceImpl implements IMessageService {
     @Autowired
     private IGroupService groupService;
 
+    private ExecutorService executorService = Executors.newFixedThreadPool(2);
+
 
     @Override
     public R send(String token, String type, String msg, String link) {
@@ -49,7 +55,7 @@ public class MessageServiceImpl implements IMessageService {
             return R.ok("消息发送成功");
         } catch (WxErrorException e) {
             log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), msg);
-            if(e.getError().getErrorCode() == 45015) {
+            if (e.getError().getErrorCode() == 45015) {
                 return R.failed("KF消息需要接收方先向微信公众号主动发送一条消息");
             } else {
                 return R.failed("消息发送失败，msg：" + e.getMessage());
@@ -80,7 +86,7 @@ public class MessageServiceImpl implements IMessageService {
                 return R.ok("消息发送成功");
             } catch (WxErrorException e) {
                 log.error("消息发送失败，openId={}, msg={}", receiver.getOpenid(), msg);
-                if(e.getError().getErrorCode() == 45015) {
+                if (e.getError().getErrorCode() == 45015) {
                     return R.failed("KF消息需要接收方先向微信公众号主动发送一条消息");
                 } else {
                     return R.failed("消息发送失败，msg：" + e.getMessage());
@@ -91,7 +97,6 @@ public class MessageServiceImpl implements IMessageService {
 
     @Override
     public R send2Group(String token, String groupUid, String type, String msg, String link) {
-        // TODO 优化代码
         User user = userService.getByToken(token);
         if (user == null) {
             return R.failed("接收用户不存在");
@@ -114,20 +119,31 @@ public class MessageServiceImpl implements IMessageService {
                         CommonConstant.SENDER_INFO +
                         "【" + user.getNikeName() +
                         "】";
-                for (int i = 0; i < numbers.size(); i++) {
-                    if (!numbers.get(i).getUserId().equals(user.getId())) {
-                        try {
-                            sendMsg(numbers.get(i).getOpenid(), msg, type, link);
-                            sendInfo.put(numbers.get(i).getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_SUCCESS).setMsg(CommonConstant.SUCCESS_MSG));
-                        } catch (WxErrorException e) {
-                            log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), msg);
-                            if(e.getError().getErrorCode() == 45015) {
-                                sendInfo.put(numbers.get(i).getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg("KF消息需要接收方先向微信公众号主动发送一条消息"));
-                            } else {
-                                sendInfo.put(numbers.get(i).getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg(e.getMessage()));
+                List<List<Group>> numbersPartition = ListUtils.partition(numbers, 2);
+                CountDownLatch countDownLatch = new CountDownLatch(numbersPartition.size());
+                String finalMsg = msg;
+                numbersPartition.forEach(x -> {
+                    executorService.submit(() -> {
+                        x.forEach(y -> {
+                            try {
+                                sendMsg(y.getOpenid(), finalMsg, type, link);
+                                sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_SUCCESS).setMsg(CommonConstant.SUCCESS_MSG));
+                            } catch (WxErrorException e) {
+                                log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), finalMsg);
+                                if (e.getError().getErrorCode() == 45015) {
+                                    sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg("KF消息需要接收方先向微信公众号主动发送一条消息"));
+                                } else {
+                                    sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg(e.getMessage()));
+                                }
                             }
-                        }
-                    }
+                        });
+                        countDownLatch.countDown();
+                    });
+                });
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+
                 }
                 return R.ok(sendInfo);
             } else {
