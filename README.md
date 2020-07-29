@@ -56,7 +56,7 @@
 1. 修改配置信息，***删除换行***，最后得到一条命令
 ```shell script
 nohup java -jar paopao-{version}.jar 
-    --spring.datasource.url="jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai" 
+    --spring.datasource.url="jdbc:mysql://localhost:3306/paopao?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai" 
     --spring.datasource.username="paopao" 
     --spring.datasource.password="123456" 
     --host="https://xxx.com" 
