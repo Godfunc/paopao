@@ -123,20 +123,24 @@ public class MessageServiceImpl implements IMessageService {
                 String finalMsg = msg;
                 numbersPartition.forEach(x -> {
                     executorService.submit(() -> {
-                        x.forEach(y -> {
-                            try {
-                                sendMsg(y.getOpenid(), finalMsg, type, link);
-                                sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_SUCCESS).setMsg(CommonConstant.SUCCESS_MSG));
-                            } catch (WxErrorException e) {
-                                log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), finalMsg);
-                                if (e.getError().getErrorCode() == CommonConstant.KF_MSG_TIME_LIMIT) {
-                                    sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg("KF消息需要接收方先向微信公众号主动发送一条消息"));
-                                } else {
-                                    sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg(e.getMessage()));
+                        try {
+                            x.forEach(y -> {
+                                try {
+                                    sendMsg(y.getOpenid(), finalMsg, type, link);
+                                    sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_SUCCESS).setMsg(CommonConstant.SUCCESS_MSG));
+                                } catch (WxErrorException e) {
+                                    log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), finalMsg);
+                                    if (e.getError().getErrorCode() == CommonConstant.KF_MSG_TIME_LIMIT) {
+                                        sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg("KF消息需要接收方先向微信公众号主动发送一条消息"));
+                                    } else {
+                                        sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg(e.getMessage()));
+                                    }
                                 }
-                            }
-                        });
-                        countDownLatch.countDown();
+                            });
+                        } finally {
+                            countDownLatch.countDown();
+                        }
+
                     });
                 });
                 try {

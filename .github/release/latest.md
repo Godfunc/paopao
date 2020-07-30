@@ -1,6 +1,7 @@
 ## Feature
-* 增加微信页面倒计时关闭
 
 ## Change
-* 优化组消息群发
-* 优化登录相关代码
+* 规范部分代码
+
+## Fixed
+* 修复CountDownLatch可能出现异常无法countDown()的bug
