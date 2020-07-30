@@ -47,6 +47,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Value("${md5Key}")
     private String md5Key;
 
+    Pattern emailPattern = Pattern.compile("^[a-z\\d]+(\\.[a-z\\d]+)*@([\\da-z](-[\\da-z])?)+(\\.{1,2}[a-z]+)+$");
+
     @Autowired
     private WxMpService wxMpService;
     @Autowired
@@ -97,8 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         } else if (StringUtils.isBlank(param.getEmail())) {
             return R.failed("请将邮箱补充完整");
         }
-        Pattern pattern = Pattern.compile("^[a-z\\d]+(\\.[a-z\\d]+)*@([\\da-z](-[\\da-z])?)+(\\.{1,2}[a-z]+)+$");
-        Matcher matcher = pattern.matcher(param.getEmail());
+        Matcher matcher = emailPattern.matcher(param.getEmail());
         if (!matcher.matches()) {
             return R.failed("邮箱格式不正确");
         }

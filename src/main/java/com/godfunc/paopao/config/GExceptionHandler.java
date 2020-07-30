@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
 /**
+ * @author godfunc
+ * @email godfunc@outlook.com
  * 异常处理器
  */
 @ControllerAdvice

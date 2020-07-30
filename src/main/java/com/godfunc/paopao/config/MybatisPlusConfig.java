@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * mybatis-plus 配置
+ * @author godfunc
+ * @email godfunc@outlook.com
  */
 @Configuration
 @MapperScan(basePackages = "com.godfunc.**.mapper")

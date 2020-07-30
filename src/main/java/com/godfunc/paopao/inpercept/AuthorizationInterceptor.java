@@ -15,6 +15,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @author godfunc
+ * @email godfunc@outlook.com
+ */
 @Component
 @AllArgsConstructor
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {

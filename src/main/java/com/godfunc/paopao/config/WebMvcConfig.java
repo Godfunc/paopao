@@ -31,6 +31,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * @author godfunc
+ * @email godfunc@outlook.com
+ */
 @Configuration
 @AllArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {

@@ -31,7 +31,6 @@ public class MyPrincipalHandshakeHandler extends DefaultHandshakeHandler {
         // 获取用户标示，用于发送点对点消息
         String user = null;
         try {
-            // user = request.getHeaders().get("id").get(0);
             user = ((ServletServerHttpRequest) request).getServletRequest().getSession().getId();
         } catch (Exception e) {
             log.error("登陆信息无效");

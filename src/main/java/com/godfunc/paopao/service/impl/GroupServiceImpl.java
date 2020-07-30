@@ -7,7 +7,7 @@ import com.godfunc.paopao.entity.Group;
 import com.godfunc.paopao.mapper.GroupMapper;
 import com.godfunc.paopao.model.GroupModel;
 import com.godfunc.paopao.service.IGroupService;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

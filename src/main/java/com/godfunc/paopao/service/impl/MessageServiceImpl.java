@@ -11,7 +11,7 @@ import com.godfunc.paopao.service.IUserService;
 import com.godfunc.paopao.service.IWxService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.error.WxErrorException;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * @author Godfunc
@@ -39,8 +37,9 @@ public class MessageServiceImpl implements IMessageService {
     @Autowired
     private IGroupService groupService;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(2);
-
+    private ExecutorService executorService = new ThreadPoolExecutor(2, 4,
+            0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<Runnable>(1024), new ThreadPoolExecutor.AbortPolicy());
 
     @Override
     public R send(String token, String type, String msg, String link) {
@@ -55,7 +54,7 @@ public class MessageServiceImpl implements IMessageService {
             return R.ok("消息发送成功");
         } catch (WxErrorException e) {
             log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), msg);
-            if (e.getError().getErrorCode() == 45015) {
+            if (e.getError().getErrorCode() == CommonConstant.KF_MSG_TIME_LIMIT) {
                 return R.failed("KF消息需要接收方先向微信公众号主动发送一条消息");
             } else {
                 return R.failed("消息发送失败，msg：" + e.getMessage());
@@ -86,7 +85,7 @@ public class MessageServiceImpl implements IMessageService {
                 return R.ok("消息发送成功");
             } catch (WxErrorException e) {
                 log.error("消息发送失败，openId={}, msg={}", receiver.getOpenid(), msg);
-                if (e.getError().getErrorCode() == 45015) {
+                if (e.getError().getErrorCode() == CommonConstant.KF_MSG_TIME_LIMIT) {
                     return R.failed("KF消息需要接收方先向微信公众号主动发送一条消息");
                 } else {
                     return R.failed("消息发送失败，msg：" + e.getMessage());
@@ -130,7 +129,7 @@ public class MessageServiceImpl implements IMessageService {
                                 sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_SUCCESS).setMsg(CommonConstant.SUCCESS_MSG));
                             } catch (WxErrorException e) {
                                 log.error("消息发送失败，openId={}, msg={}", user.getOpenid(), finalMsg);
-                                if (e.getError().getErrorCode() == 45015) {
+                                if (e.getError().getErrorCode() == CommonConstant.KF_MSG_TIME_LIMIT) {
                                     sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg("KF消息需要接收方先向微信公众号主动发送一条消息"));
                                 } else {
                                     sendInfo.put(y.getNikeName(), new SendInfoResult().setStatus(CommonConstant.STATUS_FAIL).setMsg(e.getMessage()));

@@ -19,9 +19,9 @@ public class UserInfoModel implements Serializable {
 
     private String alias;
 
-    // 我的组
+    /** 我的组 */
     private Map<String, List<GroupModel>> myGroups;
 
-    // 我加入的组
+    /** 我加入的组 */
     private Map<String, List<GroupModel>> joinedGroups;
 }

@@ -3,7 +3,7 @@ package com.godfunc.paopao.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.godfunc.paopao.util.MD5Utils;
+import com.godfunc.paopao.util.Md5Utils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -61,11 +61,11 @@ public class User implements Serializable {
     private LocalDateTime lastLoginTime;
 
     public String generateAlias(String md5Key) {
-        return MD5Utils.encoder(this.getNikeName() + IdWorker.getIdStr(), md5Key);
+        return Md5Utils.encoder(this.getNikeName() + IdWorker.getIdStr(), md5Key);
     }
 
     public String generateToken(String md5Key) {
-        return MD5Utils.encoder(this.getOpenid() + IdWorker.getIdStr(), md5Key);
+        return Md5Utils.encoder(this.getOpenid() + IdWorker.getIdStr(), md5Key);
     }
 
 }

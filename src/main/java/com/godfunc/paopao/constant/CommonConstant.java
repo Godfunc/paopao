@@ -1,9 +1,13 @@
 package com.godfunc.paopao.constant;
 
+/**
+ * @author godfunc
+ * @email godfunc@outlook.com
+ */
 public class CommonConstant {
-    // 状态可用 1
+    /** 状态可用 1 */
     public static final int STATUS_ENABLE = 1;
-    // 状态停用 0
+    /** 状态停用 0 */
     public static final int STATUS_DISABLE = 0;
 
     /**
@@ -19,9 +23,9 @@ public class CommonConstant {
      */
     public static final String TIME_FORMAT = "HH:mm:ss";
 
-    // 发起人
+    /** 发起人 */
     public static final int CREATOR = 1;
-    // 成员
+    /** 成员 */
     public static final int NUMBER = 2;
 
     public static final String STATUS_SUCCESS = "success";
@@ -29,9 +33,10 @@ public class CommonConstant {
 
     public static final String SUCCESS_MSG = "发送成功";
 
-    // 客服消息
+    /** 客服消息 */
     public static final String MSG_TYPE_KF = "KF";
 
     public static final String SENDER_INFO = "\n发送方：";
     public static final String USER_ID = "USER_ID";
+    public static final int KF_MSG_TIME_LIMIT = 45015;
 }
