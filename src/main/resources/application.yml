@@ -28,10 +28,10 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-md5Key: 123456
+md5Key: ENC(+4ZY55Md+gSD1fE1sZrjZ/6RhcWlRx69)
 authUrl: ${host}/auth
 bindUrl: ${host}/bind
 
 jwt:
-  secret: 76FDDCAASEQW231224
+  secret: ENC(Fi2qebEfWec5lxHL8Zy+NopuPjWiL8yftOpL5LtsrhA=)
   expire: 604800

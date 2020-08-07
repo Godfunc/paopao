@@ -38,7 +38,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
         Cookie[] cookies = request.getCookies();
         if (cookies == null || cookies.length < 1) {
-            return false;
+            throw new UnauthorizedException();
         }
         for (Cookie cookie : cookies) {
             if ("token".equals(cookie.getName())) {
@@ -57,10 +57,10 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
                         return true;
                     }
                 } else {
-                    return false;
+                    throw new UnauthorizedException();
                 }
             }
         }
-        return false;
+        throw new UnauthorizedException();
     }
 }
