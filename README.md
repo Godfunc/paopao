@@ -1,5 +1,5 @@
 ## 简介
-**[paopao](https://paopao.godfunc.fun)** 是一个使用Java开发的开源的微信消息通知服务。支持一对对消息推送和一对多消息推送。
+**[paopao](https://paopao.godfunc.fun:444)** 是一个使用Java开发的开源的微信消息通知服务。支持一对对消息推送和一对多消息推送。
 
 [![build](https://github.com/Godfunc/paopao/workflows/build/badge.svg)](https://github.com/Godfunc/paopao/actions)
 [![release](https://img.shields.io/github/release/Godfunc/paopao.svg)](https://github.com/Godfunc/paopao/releases)
@@ -18,9 +18,9 @@
 * Websocket（用来做微信扫码登陆）
 
 ## API接口
-* [`https://paopao.godfunc.fun/{token}/send?msg={message}`](https://paopao.godfunc.fun/message) 一对一给自己推送消息
-* [`https://paopao.godfunc.fun/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun/message-alias) 一对一给他人推送消息
-* [`https://paopao.godfunc.fun/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun/message-group) 一对多给组内成员推送消息
+* [`https://paopao.godfunc.fun:444/{token}/send?msg={message}`](https://paopao.godfunc.fun:444/message) 一对一给自己推送消息
+* [`https://paopao.godfunc.fun:444/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun:444/message-alias) 一对一给他人推送消息
+* [`https://paopao.godfunc.fun:444/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun:444/message-group) 一对多给组内成员推送消息
 
 ## 快速开始
 ### 下载代码到本地
