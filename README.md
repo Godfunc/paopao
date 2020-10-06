@@ -19,8 +19,8 @@
 
 ## API接口
 * [`https://paopao.godfunc.fun:444/{token}/send?msg={message}`](https://paopao.godfunc.fun:444/message) 一对一给自己推送消息
-* [`https://paopao.godfunc.fun:444/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun:444/message-alias) 一对一给他人推送消息
-* [`https://paopao.godfunc.fun:444/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun:444/message-group) 一对多给组内成员推送消息
+* [`https://paopao.godfunc.fun:444/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun:444/message) 一对一给他人推送消息
+* [`https://paopao.godfunc.fun:444/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun:444/message) 一对多给组内成员推送消息
 
 ## 快速开始
 ### 下载代码到本地
