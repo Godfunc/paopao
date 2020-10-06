@@ -5,9 +5,9 @@ spring:
     username: ENC(KNmR6xXVrBWWTx00IGy2bg==)
     password: ENC(ZPbMV1gg+HcQKuTG2IMrHfNof4RowN2nf3LQuIfElWY=)
 
-host: ENC(UQDvJ6GdTGQaMdjyHbhcs3MqntgfN7Q2z3cWYnegCQCKiZxS4xxi0w==)
+host: ENC(tUCEL5GV2us7l71eJJxpAssj42SwWA1Wzw42CPKjnlI43VVWWoJuRA==)
 mpQrCode: ENC(T5FrgRttE1NBj5j97TEhDAv2sg4/w7rfeV8F0YUz4V36XKFUSU4B6NJNR3kN23i3H6dHGJbs9Pk=)
-templateId: ENC(tP3/J0eeN9yCWyRd1EVlNQsF5gCoFwPUHFO2zAF8ODtUBeJVQolNCdGlDd9+BitTFkP2Br1c7KM=)
+templateId: ENC(DKej2S27UicnnbsxGmKthpoIQz9kekIal2h0OxqzQsfggGcfy163HSbgGtl27hWZfSaGQiE+YLg=)
 
 wx:
   mp:
