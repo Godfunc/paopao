@@ -1,17 +1,22 @@
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   thymeleaf:
     cache: false
   datasource:
     url: jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: paopao
+    username: root
     password: 123456
 
+
 host: http://localhost # 服务host
-mpQrCode: http://weixin.qq.com/r/xxxxxxx # 微信公众号链接
+mpQrCode: http://weixin.qq.com/r/xxxx # 微信公众号链接
 templateId: 3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM # 消息模板id
 
 wx:
   mp:
-    app-id: wx89898989089 # 微信公众号appid
-    secret: 123456 # 微信公众号secret
+    app-id: 123 # 微信公众号appid
+    secret: 345 # 微信公众号secret
+log:
+  path: /tmp

@@ -1,6 +1,6 @@
 package com.godfunc.paopao.service;
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.result.R;
 
 /**
  * @author Godfunc

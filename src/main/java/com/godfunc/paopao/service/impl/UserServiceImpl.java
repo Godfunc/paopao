@@ -2,7 +2,7 @@ package com.godfunc.paopao.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.result.R;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.godfunc.paopao.constant.CommonConstant;
 import com.godfunc.paopao.entity.Group;
@@ -200,7 +200,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public String getAuthorizationUrl(String redirectUri, String state) {
-        String url = wxMpService.oauth2buildAuthorizationUrl(redirectUri, WxConsts.OAuth2Scope.SNSAPI_USERINFO, state);
+        String url = wxMpService.getOAuth2Service().buildAuthorizationUrl(redirectUri, WxConsts.OAuth2Scope.SNSAPI_USERINFO, state);
         log.info("AuthorizationUrl {}", url);
         return url;
     }

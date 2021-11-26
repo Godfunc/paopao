@@ -4,7 +4,7 @@ server:
     context-path: /
 spring:
   profiles:
-    active: prod
+    active: dev
   application:
     name: paopao
   datasource:
@@ -21,17 +21,17 @@ mybatis-plus:
   global-config:
     banner: false
     db-config:
-      id-type: id_worker_str
+      id-type: ASSIGN_ID
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: true
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-md5Key: ENC(+4ZY55Md+gSD1fE1sZrjZ/6RhcWlRx69)
+md5Key: xxxxxxxx
 authUrl: ${host}/auth
 bindUrl: ${host}/bind
 
 jwt:
-  secret: ENC(Fi2qebEfWec5lxHL8Zy+NopuPjWiL8yftOpL5LtsrhA=)
+  secret: 11111111
   expire: 604800

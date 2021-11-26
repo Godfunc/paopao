@@ -1,6 +1,6 @@
 package com.godfunc.paopao.service;
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.result.R;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.godfunc.paopao.entity.User;
 import com.godfunc.paopao.param.GroupCreateParam;

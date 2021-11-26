@@ -1,6 +1,6 @@
 package com.godfunc.paopao.controller;
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.result.R;
 import com.godfunc.paopao.service.IMessageService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

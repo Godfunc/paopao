@@ -1,20 +1,19 @@
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
-    url: ENC(+8YND7UMG8TSdynMtlwTVsoxdUCC0aSzBP/DKoNG19jN2Cy0g4Bf5/5/quSp37pvPswR8LV5rq8so3oQsCLd4O/72U3nwotjBVAr+ma0I6/Lh+tQGEjRaLdviaVeWeOQ7LxPAfU+DHv2JX+vVarGuwtii+HdvZ2diA5VF630Y9gh2X/wneQS0Q==)
-    username: ENC(KNmR6xXVrBWWTx00IGy2bg==)
-    password: ENC(ZPbMV1gg+HcQKuTG2IMrHfNof4RowN2nf3LQuIfElWY=)
+    url: jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
 
-host: ENC(tUCEL5GV2us7l71eJJxpAssj42SwWA1Wzw42CPKjnlI43VVWWoJuRA==)
-mpQrCode: ENC(T5FrgRttE1NBj5j97TEhDAv2sg4/w7rfeV8F0YUz4V36XKFUSU4B6NJNR3kN23i3H6dHGJbs9Pk=)
-templateId: ENC(DKej2S27UicnnbsxGmKthpoIQz9kekIal2h0OxqzQsfggGcfy163HSbgGtl27hWZfSaGQiE+YLg=)
+host: http://localhost # 服务host
+mpQrCode: http://weixin.qq.com/r/xxxx # 微信公众号链接
+templateId: 3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM # 消息模板id
 
 wx:
   mp:
-    app-id: ENC(NCAyTbnmpBhi+mMFIdFsybkOY//fMbomPOfLWwEausA=)
-    secret: ENC(744TI4CgaAqoRZyGc5C7UsMvlOyS3zl8Qgv51g5AAbWINSnlIW9n4cF4gJCs24Kx)
-logging:
-  level:
-    root: error
-    com:
-      godfunc: error
+    app-id: 123
+    secret: 345
+log:
+  path: /tmp

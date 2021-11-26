@@ -1,7 +1,7 @@
 package com.godfunc.paopao.controller;
 
 
-import com.baomidou.mybatisplus.extension.api.R;
+import com.godfunc.paopao.result.R;
 import com.godfunc.paopao.annotation.Login;
 import com.godfunc.paopao.annotation.LoginUser;
 import com.godfunc.paopao.entity.User;
