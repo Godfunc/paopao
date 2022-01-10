@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{LayoutFile :: layout(~{::head}, ~{::div}, 'login')}">
+<head th:replace="component/CommonHead::common_header(~{::title},~{},~{::script})">
+    <title>错误 - PaoPao</title>
+</head>
+<body>
+    <div class="text-center">
+        <span th:text="${msg}"></span>
+    </div>
+</body>
+</html>
