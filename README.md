@@ -17,17 +17,17 @@
 * Thymeleaf（HTML模版引擎）
 * Websocket（用来做微信扫码登陆）
 
-## API接口
-* [`https://paopao.godfunc.fun:444/{token}/send?msg={message}`](https://paopao.godfunc.fun:444/message) 一对一给自己推送消息
-* [`https://paopao.godfunc.fun:444/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun:444/message) 一对一给他人推送消息
-* [`https://paopao.godfunc.fun:444/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun:444/message) 一对多给组内成员推送消息
+## API接口（示例，无法访问）
+* [`https://paopao.godfunc.fun/{token}/send?msg={message}`](https://paopao.godfunc.fun/message) 一对一给自己推送消息
+* [`https://paopao.godfunc.fun/{token}/sendToAlias/{alias}?msg={message}`](https://paopao.godfunc.fun/message) 一对一给他人推送消息
+* [`https://paopao.godfunc.fun/{token}/sendToGroup/{groupUid}?msg={message}`](https://paopao.godfunc.fun/message) 一对多给组内成员推送消息
 
 ## 快速开始
 ### 下载代码到本地
 执行命令`git clone https://github.com/Godfunc/paopao.git`
 ### 微信公众号信息配置
 1. 前往 [微信公众平台接口测试平台](https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index) 获取`appID`和`appsecret`
-2. 修改`JS接口安全域名`为你的服务所在域名。
+2. 修改`JS接口安全域名`为你的服务所在域名（开发环境可以使用局域网IP，不支持带端口）。
 3. 获取`测试号二维码`图片中的链接（可以使用在线二维码识别获取）。 
 4. `模板消息接口`处`新增测试模板`，`模板标题`填`消息通知`，`模板内容`填`消息： {{msg.DATA}}`，提交或获取到`模板ID`。
 5. 修改`网页授权获取用户基本信息`中的`授权回调页面域名`为你服务所在域名。
@@ -59,7 +59,6 @@ nohup java -jar paopao-{version}.jar
     --spring.datasource.url="jdbc:mysql://localhost:3306/paopao?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai" 
     --spring.datasource.username="paopao" 
     --spring.datasource.password="123456" 
-    --host="https://xxx.com" 
     --mpQrCode="http://mpqrxx.com" 
     --templateId="3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM" 
     --wx.mp.app-id="wx1234" 

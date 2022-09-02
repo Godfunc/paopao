@@ -55,9 +55,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private IGroupService groupService;
 
     @Override
-    public String getLoginQrCode(String sessionId) {
+    public String getLoginQrCode(String sessionId, String baseUrl) {
         log.debug("getLoginQrCode sessionId={}", sessionId);
-        return getAuthorizationUrl(authUrl, sessionId);
+        return getAuthorizationUrl(baseUrl + authUrl, sessionId);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public R getGroupQrCode(User user, String groupUid) {
+    public R getGroupQrCode(User user, String groupUid, String baseUrl) {
         if (user == null) {
             return R.failed("请重新登陆");
         }
@@ -136,7 +136,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (group == null || !group.getUserId().equals(user.getId())) {
             return R.failed("您选择的组不存在或已被删除");
         } else {
-            return R.ok(getAuthorizationUrl(bindUrl, groupUid));
+            return R.ok(getAuthorizationUrl(baseUrl + bindUrl, groupUid));
         }
     }
 
@@ -171,15 +171,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R deleteGroup(User user, String groupUid) {
-        if(user == null) {
+        if (user == null) {
             return R.failed("请重新登陆");
         }
         Group creator = groupService.getCreatorByGroupUid(groupUid);
-        if(creator == null) {
+        if (creator == null) {
             return R.failed("您选择的组不存在或已被删除");
-        } else if(!user.getId().equals(creator.getUserId())) {
+        } else if (!user.getId().equals(creator.getUserId())) {
             return R.failed("您选择的组不存在或已被删除");
-        } else if(user.getId().equals(creator.getUserId())) {
+        } else if (user.getId().equals(creator.getUserId())) {
             groupService.deleteByGroupUid(groupUid);
             return R.ok("删除删除");
         }
@@ -188,10 +188,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public R leaveGroup(User user, String groupUid) {
-        if(user == null) {
+        if (user == null) {
             return R.failed("请重新登陆");
         }
-        if(groupService.levelGroup(user.getId(), groupUid)) {
+        if (groupService.levelGroup(user.getId(), groupUid)) {
             return R.ok("离开成功");
         } else {
             return R.failed("改组不存在或您已不在组中");

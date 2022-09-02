@@ -2,6 +2,8 @@ server:
   port: 9899
   servlet:
     context-path: /
+    session:
+      tracking-modes: cookie
 spring:
   profiles:
     active: dev
@@ -29,8 +31,8 @@ mybatis-plus:
     jdbc-type-for-null: 'null'
 
 md5Key: xxxxxxxx
-authUrl: ${host}/auth
-bindUrl: ${host}/bind
+authUrl: /auth
+bindUrl: /bind
 
 jwt:
   secret: 11111111

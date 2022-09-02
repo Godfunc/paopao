@@ -10,7 +10,9 @@ import com.godfunc.paopao.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("login")
-    public String login(HttpSession session, Model model) {
-        model.addAttribute("qrCode", userService.getLoginQrCode(session.getId()));
+    public String login(HttpServletRequest request, HttpSession session, Model model) {
+        model.addAttribute("qrCode", userService.getLoginQrCode(session.getId(), ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toString()));
         model.addAttribute("id", session.getId());
         return "login";
     }
@@ -56,8 +58,8 @@ public class UserController {
     @Login
     @GetMapping("groupQrCode/{groupUid}")
     @ResponseBody
-    public R getGroupQrCode(@LoginUser User user, @PathVariable String groupUid) {
-        return userService.getGroupQrCode(user, groupUid);
+    public R getGroupQrCode(HttpServletRequest request, @LoginUser User user, @PathVariable String groupUid) {
+        return userService.getGroupQrCode(user, groupUid, ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).build().toString());
     }
 
     @Login

@@ -18,7 +18,7 @@ public interface IUserService extends IService<User> {
 
     String getAuthorizationUrl(String redirectUri, String state);
 
-    String getLoginQrCode(String sessionId);
+    String getLoginQrCode(String sessionId, String baseUrl);
 
     String console(User user, Model model);
 
@@ -28,7 +28,7 @@ public interface IUserService extends IService<User> {
 
     User getByOpenId(String openId);
 
-    R getGroupQrCode(User user, String groupUid);
+    R getGroupQrCode(User user, String groupUid, String baseUrl);
 
     R groupNumberDelete(User user, String groupId);
 
