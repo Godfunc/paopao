@@ -19,6 +19,13 @@ spring:
       maximum-pool-size: 12
       idle-timeout: 30000
       max-lifetime: 1200000
+  sql:
+    init:
+      schema-locations:
+        - classpath:sql/schema.sql
+      platform: oracle
+      mode: always
+      encoding: utf-8
 mybatis-plus:
   global-config:
     banner: false
@@ -30,10 +37,10 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-md5Key: xxxxxxxx
+md5Key: ${MD5KEY}
 authUrl: /auth
 bindUrl: /bind
 
 jwt:
-  secret: 11111111
+  secret: ${JWT_SECRET}
   expire: 604800

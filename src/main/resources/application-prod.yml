@@ -3,17 +3,16 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    url: jdbc:mysql://${MYSQL_HOST}/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USERNAEM}
+    password: ${MYSQL_PASSWORD}
 
-host: http://localhost # 服务host
-mpQrCode: http://weixin.qq.com/r/xxxx # 微信公众号链接
-templateId: 3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM # 消息模板id
+mpQrCode: ${MP_QR_CDOE} # 微信公众号链接
+templateId: ${TEMPLATE_ID} # 消息模板id
 
 wx:
   mp:
-    app-id: 123
-    secret: 345
+    app-id: ${WX_APP_ID} # 微信公众号appid
+    secret: ${WX_SECRET}  # 微信公众号secret
 log:
   path: /tmp
