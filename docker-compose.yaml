@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  paopao:
+    image: registry.cn-hangzhou.aliyuncs.com/k8s-godfunc/paopao:v1.1
+    ports:
+      - "9899:9899"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Asia/Shanghai
+      MYSQL_HOST: mysql:3306
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: 123456
+      MP_QR_CODE: http://weixin.qq.com/r/xxxxxx
+      TEMPLATE_ID: zxdawdsffadxcasdad
+      WX_APP_ID: wxe12esaadasd
+      WX_SECRET: axfdasrwqdsf
+    depends_on:
+      - mysql
+    networks:
+      - paopao
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+      - ./data:/var/lib/mysql
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+    networks:
+      - paopao
+networks:
+  paopao:
+    driver: bridge

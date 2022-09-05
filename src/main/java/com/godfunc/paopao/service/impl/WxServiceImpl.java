@@ -34,8 +34,6 @@ import java.util.Collections;
 @Slf4j
 public class WxServiceImpl implements IWxService {
 
-    @Value("${md5Key}")
-    private String md5Key;
     @Value("${templateId}")
     private String templateId;
 
@@ -90,8 +88,8 @@ public class WxServiceImpl implements IWxService {
             user = new User();
             user.setNikeName(userInfo.getNickname())
                     .setOpenid(accessToken.getOpenId())
-                    .setAlias(user.generateAlias(md5Key))
-                    .setToken(user.generateToken(md5Key))
+                    .setAlias(user.generateAlias())
+                    .setToken(user.generateToken())
                     .setRegistrationTime(LocalDateTime.now())
                     .setLastLoginTime(LocalDateTime.now());
             userService.save(user);
@@ -140,8 +138,8 @@ public class WxServiceImpl implements IWxService {
                 user = new User();
                 user.setNikeName(userInfo.getNickname())
                         .setOpenid(userInfo.getOpenid())
-                        .setAlias(user.generateAlias(md5Key))
-                        .setToken(user.generateToken(md5Key))
+                        .setAlias(user.generateAlias())
+                        .setToken(user.generateToken())
                         .setLastLoginTime(LocalDateTime.now())
                         .setRegistrationTime(LocalDateTime.now());
                 userService.save(user);

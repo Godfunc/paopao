@@ -44,8 +44,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private String authUrl;
     @Value("${bindUrl}")
     private String bindUrl;
-    @Value("${md5Key}")
-    private String md5Key;
 
     Pattern emailPattern = Pattern.compile("^[a-z\\d]+(\\.[a-z\\d]+)*@([\\da-z](-[\\da-z])?)+(\\.{1,2}[a-z]+)+$");
 
@@ -103,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (!matcher.matches()) {
             return R.failed("邮箱格式不正确");
         }
-        int count = groupService.count(Wrappers.<Group>lambdaQuery().eq(Group::getUserId, user.getId()).eq(Group::getName, param.getName()));
+        long count = groupService.count(Wrappers.<Group>lambdaQuery().eq(Group::getUserId, user.getId()).eq(Group::getName, param.getName()));
         if (count > 0) {
             return R.failed("当前组以存在");
         } else {
@@ -116,7 +114,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                     .setOpenid(user.getOpenid())
                     .setType(CommonConstant.CREATOR)
                     .setCreateTime(LocalDateTime.now());
-            group.setGroupUid(group.generateGroupUid(md5Key));
+            group.setGroupUid(group.generateGroupUid());
             groupService.save(group);
             return R.ok(group.getId());
         }

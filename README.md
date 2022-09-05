@@ -33,13 +33,11 @@
 5. 修改`网页授权获取用户基本信息`中的`授权回调页面域名`为你服务所在域名。
 ### 项目配置文件配置`application-{dev}.yml`
 1. 使用上面获取到的`appid`和`appsecret`配置 `wx.mp.app-id`和`wx.mp.secret`。
-2. 将服务所有域名配置在`host`上。
-3. 将识别出来的`测试号二维码`配置在`mpQrCode`上。
-4. 将新增的`模板ID`配置在`templateId`上。
+2. 将识别出来的`测试号二维码`配置在`mpQrCode`上。
+3. 将新增的`模板ID`配置在`templateId`上。
 ### 配置数据库（这里使用的是MySql）
-1. 创建一个名为`paopao`的数据库。
-2. 执行项目下`db/mysql.sql`创建表。
-3. 在配置文件中设置`spring.datasource.url`、`spring.datasource.username`和`spring.datasource.password`。
+1. 创建一个名为`paopao`的数据库（启动项目会自动建表）。
+2. 在配置文件中设置`spring.datasource.url`、`spring.datasource.username`和`spring.datasource.password`。
 ### 设置生效的配置文件
 1. 修改`application.yml`中的`spring.profiles.active`为你刚配置的配置文件。以`dev`为例，如果你刚才的配置信息写到`application-dev.yml`中，那么`spring.profiles.active`就是应该写`dev`。
 ### 打包

@@ -60,12 +60,12 @@ public class User implements Serializable {
      */
     private LocalDateTime lastLoginTime;
 
-    public String generateAlias(String md5Key) {
-        return Md5Utils.encoder(this.getNikeName() + IdWorker.getIdStr(), md5Key);
+    public String generateAlias() {
+        return Md5Utils.encoder(this.getNikeName() + IdWorker.getIdStr(), LocalDateTime.now().toString());
     }
 
-    public String generateToken(String md5Key) {
-        return Md5Utils.encoder(this.getOpenid() + IdWorker.getIdStr(), md5Key);
+    public String generateToken() {
+        return Md5Utils.encoder(this.getOpenid() + IdWorker.getIdStr(), LocalDateTime.now().toString());
     }
 
 }

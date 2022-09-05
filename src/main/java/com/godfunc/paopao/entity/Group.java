@@ -66,8 +66,8 @@ public class Group implements Serializable {
      */
     private LocalDateTime createTime;
 
-    public String generateGroupUid(String md5Key) {
-        return DigestUtils.md5Hex(this.getId() + this.getName() + this.getUserId() + md5Key);
+    public String generateGroupUid() {
+        return DigestUtils.md5Hex(this.getId() + this.getName() + this.getUserId() + createTime.toString());
     }
 
 }

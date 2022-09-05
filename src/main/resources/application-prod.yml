@@ -4,10 +4,10 @@ spring:
       on-profile: prod
   datasource:
     url: jdbc:mysql://${MYSQL_HOST}/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: ${MYSQL_USERNAEM}
+    username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
-mpQrCode: ${MP_QR_CDOE} # 微信公众号链接
+mpQrCode: ${MP_QR_CODE} # 微信公众号链接
 templateId: ${TEMPLATE_ID} # 消息模板id
 
 wx:

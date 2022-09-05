@@ -23,7 +23,7 @@ spring:
     init:
       schema-locations:
         - classpath:sql/schema.sql
-      platform: oracle
+      platform: mysql
       mode: always
       encoding: utf-8
 mybatis-plus:
@@ -37,10 +37,9 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 
-md5Key: ${MD5KEY}
 authUrl: /auth
 bindUrl: /bind
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:} # 非必须
   expire: 604800

@@ -4,6 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,13 @@ public class JwtConfig {
 
     private String secret;
     private long expire;
+
+    public String getSecret() {
+        if(StringUtils.isBlank(secret)) {
+            this.secret = RandomStringUtils.randomAlphabetic(15);
+        }
+        return secret;
+    }
 
     /**
      * 生成token
@@ -36,7 +45,7 @@ public class JwtConfig {
                 .setSubject(subject)
                 .setIssuedAt(nowDate)
                 .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, getSecret())
                 .compact();
     }
 
@@ -48,7 +57,7 @@ public class JwtConfig {
      */
     public Claims getTokenClaim(String token) {
         try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return Jwts.parser().setSigningKey(getSecret()).parseClaimsJws(token).getBody();
         } catch (Exception e) {
             return null;
         }
