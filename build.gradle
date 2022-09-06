@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.0'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.godfunc'
@@ -9,30 +9,35 @@ version = 'v1.1'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'xerces:xercesImpl:2.12.2'
-	implementation 'org.springframework.boot:spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	implementation 'org.apache.commons:commons-lang3'
-	implementation 'org.apache.commons:commons-collections4:4.4'
-	implementation 'com.github.binarywang:wx-java-mp-spring-boot-starter:4.4.0'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
-
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'junit:junit'
+    implementation 'xerces:xercesImpl:2.12.2'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'com.github.binarywang:wx-java-mp-spring-boot-starter:4.4.0'
+    compileOnly 'org.projectlombok:lombok'
+    if (System.hasProperty("BUILD_TYPE") && System.getProperty("BUILD_TYPE") == 'mysql') {
+        print("build type mysql")
+        runtimeOnly 'mysql:mysql-connector-java'
+    } else {
+        print("build type sqlite")
+        runtimeOnly 'com.github.gotson:sqlite-jdbc:3.32.3.8'
+    }
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'junit:junit'
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

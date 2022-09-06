@@ -2,13 +2,11 @@ spring:
   config:
     activate:
       on-profile: dev
-  thymeleaf:
-    cache: false
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-
+    url: jdbc:sqlite:${SQLITE_FILE:./paopao.db}
+  sql:
+    init:
+      platform: sqlite
 mpQrCode: ${MP_QR_CODE} # 微信公众号链接
 templateId: ${TEMPLATE_ID} # 消息模板id
 

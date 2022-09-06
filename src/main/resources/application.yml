@@ -11,7 +11,7 @@ spring:
     name: paopao
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.sqlite.JDBC
     hikari:
       auto-commit: true
       connection-timeout: 20000
@@ -22,8 +22,7 @@ spring:
   sql:
     init:
       schema-locations:
-        - classpath:sql/schema.sql
-      platform: mysql
+        - classpath:sql/schema-${spring.sql.init.platform}.sql
       mode: always
       encoding: utf-8
 mybatis-plus:

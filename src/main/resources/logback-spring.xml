@@ -36,13 +36,13 @@
 
     <!-- 生产环境 -->
     <springProfile name="prod">
-        <logger name="org.springframework.web" level="ERROR">
+        <logger name="org.springframework.web" level="INFO">
             <appender-ref ref="FILE"/>
         </logger>
-        <logger name="org.springboot.sample" level="ERROR">
+        <logger name="org.springboot.sample" level="INFO">
             <appender-ref ref="FILE"/>
         </logger>
-        <logger name="com.godfunc" level="ERROR">
+        <logger name="com.godfunc" level="DEBUG">
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
