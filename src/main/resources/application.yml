@@ -6,7 +6,7 @@ server:
       tracking-modes: cookie
 spring:
   profiles:
-    active: dev
+    active: sqlite
   application:
     name: paopao
   datasource:

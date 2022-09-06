@@ -25,25 +25,23 @@
     </appender>
 
     <!-- 开发、测试环境 -->
-    <springProfile name="dev,test">
         <logger name="com.godfunc" level="DEBUG">
             <appender-ref ref="CONSOLE"/>
         </logger>
         <logger name="org.springframework" level="INFO">
             <appender-ref ref="CONSOLE"/>
         </logger>
-    </springProfile>
 
     <!-- 生产环境 -->
-    <springProfile name="prod">
-        <logger name="org.springframework.web" level="INFO">
-            <appender-ref ref="FILE"/>
-        </logger>
-        <logger name="org.springboot.sample" level="INFO">
-            <appender-ref ref="FILE"/>
-        </logger>
-        <logger name="com.godfunc" level="DEBUG">
-            <appender-ref ref="FILE"/>
-        </logger>
-    </springProfile>
+<!--    <springProfile name="prod">-->
+<!--        <logger name="org.springframework.web" level="INFO">-->
+<!--            <appender-ref ref="FILE"/>-->
+<!--        </logger>-->
+<!--        <logger name="org.springboot.sample" level="INFO">-->
+<!--            <appender-ref ref="FILE"/>-->
+<!--        </logger>-->
+<!--        <logger name="com.godfunc" level="DEBUG">-->
+<!--            <appender-ref ref="FILE"/>-->
+<!--        </logger>-->
+<!--    </springProfile>-->
 </configuration>
