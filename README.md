@@ -28,7 +28,7 @@
 ### 微信公众号信息配置
 1. 前往 [微信公众平台接口测试平台](https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index) 获取`appID`和`appsecret`
 2. 修改`JS接口安全域名`为你的服务所在域名（开发环境可以使用局域网IP，不支持带端口）。
-3. 获取`测试号二维码`图片中的链接（可以使用在线二维码识别获取）。 
+3. 获取`测试号二维码`图片中的链接（可以使用在线二维码识别获取）。
 4. `模板消息接口`处`新增测试模板`，`模板标题`填`消息通知`，`模板内容`填`消息： {{msg.DATA}}`，提交或获取到`模板ID`。
 5. 修改`网页授权获取用户基本信息`中的`授权回调页面域名`为你服务所在域名。
 ### 项目配置文件配置`application-{dev}.yml`
@@ -66,4 +66,37 @@ nohup java -jar paopao-{version}.jar
 >>app.log &
 ```
 2. 最终得到的应该是一条这样的命令
-`nohup java -jar paopao-{version}.jar --spring.datasource.url="jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai" --spring.datasource.username="paopao" --spring.datasource.password="123456" --host="https://xxx.com" --mpQrCode="https://mpqr.com" --templateId="3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM" --wx.mp.app-id="wx1234" --wx.mp.secret="123455" >> app.log &`
+   `nohup java -jar paopao-{version}.jar --spring.datasource.url="jdbc:mysql://localhost:3306/paopao?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai" --spring.datasource.username="paopao" --spring.datasource.password="123456" --host="https://xxx.com" --mpQrCode="https://mpqr.com" --templateId="3XMYYC4jpz3nSWWVRehUK0oLBo7WN4A_6L56FlDVIUM" --wx.mp.app-id="wx1234" --wx.mp.secret="123455" >> app.log &`
+
+3. nginx配置
+```text
+server {
+    listen       80;
+    listen       443 ssl http2;
+    listen       [::]:443 ssl http2;
+    server_name  paopao.godfunc.fun;
+    root         /usr/share/nginx/html;
+
+    ssl_certificate "/xx/fullchain.pem";
+    ssl_certificate_key "/xx/privkey.pem";
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout  10m;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:9899;
+	    proxy_set_header Host $host;
+	    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	    proxy_set_header REMOTE-HOST $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr; 
+	    proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
